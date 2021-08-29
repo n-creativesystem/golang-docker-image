@@ -1,0 +1,29 @@
+name: Build and Publish
+
+on:
+  push:
+    branches: ["*"]
+
+# Workflowsで使用する環境変数を定義
+env:
+  REGISTRY_HOSTNAME: ncreativesystem
+  IMAGE_NAME: golang-developments
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Docker imageのビルド
+      - name: Build with Docker
+        run: |
+          docker build -t $REGISTRY_HOSTNAME/$IMAGE_NAME:dev .
+
+      # ビルド済みのイメージをGithub PackagesへPush
+      - name: Push the image to Github Packages
+        run: |
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+          docker push $REGISTRY_HOSTNAME/$IMAGE_NAME:dev
