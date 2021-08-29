@@ -8,6 +8,8 @@ on:
 env:
   REGISTRY_HOSTNAME: ncreativesystem
   IMAGE_NAME: golang-developments
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
 jobs:
   setup-build-publish-deploy:
